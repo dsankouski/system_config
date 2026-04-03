@@ -1,0 +1,112 @@
+alias pmbootstrap=~/side/pmos/pmbootstrap/pmbootstrap.py
+alias a5_boot_flash="adb shell 'dd if=/tmp/boot.img of=/dev/block/platform/13540000.dwmmc0/by-name/BOOT'"
+alias flash_daily_boot_s9="adb push /home/dzmitry/side/SM-G9600/boot.img-android-daily-driver-bck /tmp/boot.img && adb -d shell 'dd of=/dev/block/platform/soc/1d84000.ufshc/by-name/boot if=/tmp/boot.img'"
+alias do_not_save_history='unset HISTFILE'
+alias star_path='pushd ~/.local/var/pmbootstrap/chroot_buildroot_aarch64/home/pmos/build/pkg/u-boot-postmarketos-starqltechn/boot'
+alias kermit_send_uboot='~/side/a5/kermit_send.sh ~/side/u-boot/u-boot.bin'
+alias envkernel_source='. ~/side/pmos/pmbootstrap/helpers/envkernel.sh'
+alias ssh_pmos='ssh user@172.16.42.1'
+alias ssh_office_www='ssh -i ~/.ssh/work_id_rsa www-data@jenkins.wlogics.ovh'
+alias ssh_pmusb='ssh user@172.16.42.1'
+alias build_linux='~/side/pmos/linux-kernel-module-cheat/build-linux --arch aarch64 --config-fragment ~/side/pmos/linux-kernel-module-cheat/config'
+alias run_linux='~/side/pmos/linux-kernel-module-cheat/run --arch aarch64 --dtb=/home/dzmitry/side/pmos/linux-kernel-module-cheat/qemu.dtb'
+alias dtc_qemu='dtc -I dts -O dtb -o ~/side/pmos/linux-kernel-module-cheat/qemu.dtb ~/side/pmos/linux-kernel-module-cheat/qemu.dts'
+alias quit_linux='echo quit | ~/side/pmos/linux-kernel-module-cheat/qemu-monitor'
+alias gdb_linux='~/side/pmos/linux-kernel-module-cheat/run-gdb'
+
+alias adb_ramoops='adb shell cat /sys/fs/pstore/console-ramoops-0'
+alias emulator='~/Android/Sdk/emulator/emulator'
+alias envkernel='source ~/side/pmos/pmbootstrap/helpers/envkernel.sh'
+alias translate='trans --interactive :ru'
+alias перевод='trans --interactive :en'
+
+flash_boot_mi6() {
+	adb push $1 /tmp/boot.img && adb -d shell 'dd of=/dev/block/platform/soc/1da4000.ufshc/by-name/boot if=/tmp/boot.img'
+}
+
+git_create_pr_msg() {
+  base_branch=$1
+  git log --pretty=format:"### %s%n%n%b%n" $base_branch..HEAD | xclip -i -selection clipboard
+}
+
+cp_anbox() {
+    sudo cp /var/snap/anbox/common/data/system/devices/keychars/anbox-keyboard.kcm_$1 /var/snap/anbox/common/data/system/devices/keychars/anbox-keyboard.kcm
+}
+
+flash_boot_s9() {
+	adb push $1 /tmp/boot.img && adb -d shell 'dd of=/dev/block/platform/soc/1d84000.ufshc/by-name/boot if=/tmp/boot.img'
+}
+
+flash_boot_s9_scp() {
+	scp $1 pmos:/tmp/boot.img && ssh -t pmos 'sudo dd of=/dev/disk/by-partlabel/boot if=/tmp/boot.img bs=32'
+}
+
+flash_boot_s9_slot1() {
+	adb push $1 /tmp/boot.img && adb -d shell 'dd of=/dev/block/platform/soc/1d84000.ufshc/by-name/boot if=/tmp/boot.img bs=1M seek=1'
+}
+
+flash_boot_s9_slot1_scp() {
+	scp $1 pmos:/tmp/boot.img && ssh -t pmos 'sudo dd of=/dev/disk/by-partlabel/boot if=/tmp/boot.img bs=1M seek=1'
+}
+
+flash_boot_s9_slot2() {
+	adb push $1 /tmp/boot.img && adb -d shell 'dd of=/dev/block/platform/soc/1d84000.ufshc/by-name/boot if=/tmp/boot.img bs=21M seek=1'
+}
+
+flash_boot_s9_slot2_scp() {
+	scp $1 pmos:/tmp/boot.img && ssh -t pmos 'sudo dd of=/dev/disk/by-partlabel/boot if=/tmp/boot.img bs=21M seek=1'
+}
+
+flash_recovery_s9_scp() {
+	scp $1 pmos:/tmp/boot.img && ssh -t pmos 'sudo dd of=/dev/disk/by-partlabel/recovery if=/tmp/boot.img bs=32M'
+}
+
+flash_recovery_s9_slot1_scp() {
+	scp $1 pmos:/tmp/boot.img && ssh -t pmos 'sudo dd of=/dev/disk/by-partlabel/recovery if=/tmp/boot.img bs=1M seek=1'
+}
+
+flash_recovery_s9_slot2_scp() {
+	scp $1 pmos:/tmp/boot.img && ssh -t pmos 'sudo dd of=/dev/disk/by-partlabel/recovery if=/tmp/boot.img bs=32M seek=1'
+}
+
+flash_recovery_s9_adb() {
+	adb push $1 /tmp/boot.img && adb -d shell 'dd of=/dev/block/platform/soc/1d84000.ufshc/by-name/recovery if=/tmp/boot.img bs=32M'
+}
+
+flash_recovery_s9_slot1_adb() {
+	adb push $1 /tmp/boot.img && adb -d shell 'dd of=/dev/block/platform/soc/1d84000.ufshc/by-name/recovery if=/tmp/boot.img bs=1M seek=1'
+}
+
+flash_recovery_s9_slot2_adb() {
+	adb push $1 /tmp/boot.img && adb -d shell 'dd of=/dev/block/platform/soc/1d84000.ufshc/by-name/recovery if=/tmp/boot.img bs=32M seek=1'
+}
+
+flash_boot_s9_slot3() {
+	adb push $1 /tmp/boot.img && adb -d shell 'dd of=/dev/block/platform/soc/1d84000.ufshc/by-name/boot if=/tmp/boot.img bs=18M seek=1'
+}
+
+flash_boot_s9_slot4() {
+	adb push $1 /tmp/boot.img && adb -d shell 'dd of=/dev/block/platform/soc/1d84000.ufshc/by-name/boot if=/tmp/boot.img bs=19M seek=1'
+}
+
+flash_boot_s9_slot5() {
+	adb push $1 /tmp/boot.img && adb -d shell 'dd of=/dev/block/platform/soc/1d84000.ufshc/by-name/boot if=/tmp/boot.img bs=20M seek=1'
+}
+
+flash_boot_s9_slot6() {
+	adb push $1 /tmp/boot.img && adb -d shell 'dd of=/dev/block/platform/soc/1d84000.ufshc/by-name/boot if=/tmp/boot.img bs=62000K seek=1'
+}
+
+flash_recovery_s9_slot6() {
+	adb push $1 /tmp/boot.img && adb -d shell 'dd of=/dev/block/platform/soc/1d84000.ufshc/by-name/recovery if=/tmp/boot.img bs=62000K seek=1'
+}
+
+pull_boot_s9() {
+	adb -d shell 'dd if=/dev/block/platform/soc/1d84000.ufshc/by-name/boot of=/tmp/boot.img' &&  adb pull /tmp/boot.img $1
+}
+
+tsksel() {
+  $1 &
+  taskset -cp 0 $!
+}
+
